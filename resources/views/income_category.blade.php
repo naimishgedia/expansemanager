@@ -34,20 +34,53 @@
                <section class="row">
                   <div class="col-12 col-lg-12">
                      <div class="row">
+						@php
+							use App\Models\SubIncomeCategory;
+						@endphp
 						
 						@foreach($income_categories as $newincome_categories)
+						
+						@php
+							$subcategories = SubIncomeCategory::where('user_id', auth()->user()->id)
+								->where('exp_cat_id', $newincome_categories->id)
+								->get(); 
+						@endphp
                         <div class="col-6 col-lg-6 col-md-6">
                            <div class="card">
                               <div class="card-body px-3 py-4-5">
                                  <div class="row">
-                                    <div class="col-md-4">
-                                       <div class="stats-icon purple">
+                                    <div class="col-md-2">
+                                       <div class="stats-icon purple" style="float: left;">
 									   {!!$newincome_categories->category_icon!!}
                                        </div>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-10">
                                        <h4 class="text-muted font-semibold">{{$newincome_categories->category_name}}</h4>
-                                       <p><a style="cursor: pointer;color:green;" onclick="EditIncomeCategory({{$newincome_categories->id}})"><b>Edit</b></a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="DeleteIncomecategory({{$newincome_categories->id}})" style="cursor: pointer;color:red;"><b>Delete</b></a></p>
+                                       <p><a style="cursor: pointer;color:green;" onclick="EditIncomeCategory({{$newincome_categories->id}})"><b>Edit</b></a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="DeleteIncomecategory({{$newincome_categories->id}})" style="cursor: pointer;color:red;"><b>Delete</b></a></p><br>
+									   
+									   <div class="row col-md-12">
+										<div class="col-md-8">
+											<input type="text" placeholder="Add Subcategory" name="subcategory_name" id="subcategory_name{{$newincome_categories->id}}" class="form-control">
+										</div>
+										<div class="col-md-4">
+											<button class="btn btn-primary" onclick="SaveSubIncomeCat({{$newincome_categories->id}})"><span id="loader_btn{{$newincome_categories->id}}" style="display:none;" class="spinner-border spinner-border-sm"></span>&nbsp;Save</button>
+										</div>
+                                       </div><br>
+									   
+									   <div id="dynamic_div{{$newincome_categories->id}}" class="row col-md-12">
+										@foreach($subcategories as $newsubcategories)
+											<div class="col-md-6" style="border: 1px solid #d3d3d3;">
+											{{$newsubcategories->subcategory_name}}
+											</div>
+											<div class="col-md-3" style="border: 1px solid #d3d3d3;">
+												<a style="cursor: pointer;color:green;" ><b>Edit</b></a>
+											</div>
+											<div class="col-md-3" style="border: 1px solid #d3d3d3;">
+												<a onclick="DeleteSubIncomeCategory({{$newsubcategories->id}},{{$newincome_categories->id}})" style="cursor: pointer;color:red;"><b>Delete</b></a>
+											</div>
+										@endforeach
+									   </div>
+									   
                                     </div>
                                  </div>
                               </div>
@@ -210,5 +243,71 @@
 				}
 		});
 	}
+	
+	
+	
+	var Save_subincomecategory = "{{ route('save_subincomecategory') }}";
+	function SaveSubIncomeCat(id){
+		var subcategory_name=$("#subcategory_name"+id+"").val();
+		if(subcategory_name==""){
+			alert("Please enter subcategory name");
+			return false;
+		}
+		$("#loader_btn"+id+"").show();
+		$.ajaxSetup({
+					  headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					  }
+				   });
+		$.ajax({
+				url:Save_subincomecategory,
+				method:"POST",
+				data:{
+					_token:token,
+					exp_cat_id:id,
+					subcategory_name:subcategory_name
+				},
+				success:function(res){
+					if(res==0){
+						alert("Something Went Wrong");
+					}else{
+						$("#loader_btn"+id+"").hide();
+						$("#subcategory_name"+id+"").val("");
+						$("#dynamic_div"+id+"").empty(); 	
+						$("#dynamic_div"+id+"").append(res); 
+					}
+						
+				}
+		})
+	}
+	
+	var Delete_SubIncomeCategory = "{{ route('delete_subincomecategory') }}";
+	function DeleteSubIncomeCategory(Subincomecat_ID,IncomeCat_ID){
+		$.ajaxSetup({
+					  headers: { 
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					  }
+				   });
+		$.ajax({
+				url:Delete_SubIncomeCategory,
+				method:"POST",
+				data:{
+					_token:token,
+					sub_inc_cat:Subincomecat_ID,
+					inc_cat:IncomeCat_ID
+				},
+				success:function(res){
+					if(res==0){
+						alert("Something Went Wrong");
+					}else{
+						$("#dynamic_div"+IncomeCat_ID+"").empty(); 	
+						$("#dynamic_div"+IncomeCat_ID+"").append(res); 
+					}
+						
+				}
+		})
+	}
+	
+	
 </script>
 @endsection

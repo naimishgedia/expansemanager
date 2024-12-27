@@ -1,0 +1,9 @@
+Authentication
+Change password
+Logout
+insert,update,delete Expanse category
+insert,delete subexpanse category
+insert,update,deleteIncome category
+insert,delete subincome category
+
+currently working on expanse category edit functionality

@@ -42,6 +42,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::post('edit-income-category', [IncomeCategoryController::class, 'editincomecategoryFunction'])->name('editincomecategory');
 	Route::post('update-income-cataegory', [IncomeCategoryController::class, 'updateincomecataegoryfunction'])->name('updateincomecataegory');
 	Route::post('delete-income-category', [IncomeCategoryController::class, 'deleteincomecategoryFunction'])->name('deleteincomecategory');
+	Route::post('save-subincomecategory', [IncomeCategoryController::class, 'save_subincomecategory'])->name('save_subincomecategory');
+	Route::post('delete-subincomecategory', [IncomeCategoryController::class, 'delete_subincomecategory'])->name('delete_subincomecategory');
 
 	//Daily Expanse
 	Route::get('daily-expanse', [DailyExpanseController::class, 'index'])->name('daily_expanse');

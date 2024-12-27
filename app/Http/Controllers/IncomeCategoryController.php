@@ -5,6 +5,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\UserModel;
 use App\Models\UserIncomeCategory;
+use App\Models\SubIncomeCategory;
 use Hash;
 use DB;  
 use Session;
@@ -128,6 +129,71 @@ class IncomeCategoryController extends Controller
 		 $incCategory = UserIncomeCategory::findOrFail($id);
 		 $incCategory->delete();
 		 return 1;
+	}
+	
+	public function save_subincomecategory(Request $request){
+		$input = $request->all(); 
+		$sub_incomeCategory = SubIncomeCategory::create([
+			'user_id' => auth()->user()->id, 
+			'exp_cat_id' => $input['exp_cat_id'],
+			'subcategory_name' => $input['subcategory_name']
+		]);
+		if ($sub_incomeCategory) {
+			$UserSubIncomeCat = SubIncomeCategory::where('user_id', auth()->user()->id)
+								->where('exp_cat_id', $input['exp_cat_id'])
+								->get();
+			
+			$table='';
+			foreach($UserSubIncomeCat as $newUserSubIncomeCat){
+				$table.='<div class="col-md-6" style="border: 1px solid #d3d3d3;">
+					'.$newUserSubIncomeCat->subcategory_name.'
+				</div>
+				<div class="col-md-3" style="border: 1px solid #d3d3d3;">
+					<a style="cursor: pointer;color:green;"><b>Edit</b></a>
+				</div>
+				<div class="col-md-3" style="border: 1px solid #d3d3d3;" onclick="DeleteSubIncomeCategory('.$newUserSubIncomeCat->id.','.$input['exp_cat_id'].')" >
+					<a style="cursor: pointer;color:red;"><b>Delete</b></a>
+				</div>';
+			}
+			$table.='';
+			echo $table;
+		} else {
+			echo 0;
+		}
+	}
+	
+	public function delete_subincomecategory(Request $request){
+		$input = $request->all();
+		$id = $request->input('sub_inc_cat');
+		$SubincCategory = SubIncomeCategory::findOrFail($id);
+		if ($SubincCategory->delete()) {
+			$UserSubincomeCat = SubIncomeCategory::where('user_id', auth()->user()->id)
+								->where('exp_cat_id', $input['inc_cat'])
+								->get();
+			  
+			if(sizeof($UserSubincomeCat)==0){
+				echo "No Data Available";
+			}else{
+				$table='';  
+				foreach($UserSubincomeCat as $newUserSubincomeCat){  
+				$table.='<div class="col-md-6" style="border: 1px solid #d3d3d3;">
+					'.$newUserSubincomeCat->subcategory_name.'
+				</div>
+				<div class="col-md-3" style="border: 1px solid #d3d3d3;">
+					<a style="cursor: pointer;color:green;"><b>Edit</b></a>
+				</div>
+				<div class="col-md-3" style="border: 1px solid #d3d3d3;" onclick="DeleteSubIncomeCategory('.$newUserSubincomeCat->id.','.$input['inc_cat'].')" > 
+					<a style="cursor: pointer;color:red;"><b>Delete</b></a>
+				</div>';
+				}
+				$table.='';
+				echo $table;
+			}
+			 
+			
+		}else{
+			echo 0;
+		}
 	}
 	
 	

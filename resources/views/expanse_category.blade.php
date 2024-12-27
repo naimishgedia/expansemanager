@@ -58,6 +58,7 @@
                                     <div class="col-md-10"> 
                                        <h4 class="text-muted font-semibold"> {{$newexpanse_categories->category_name}}</h4>
                                        <p><a style="cursor: pointer;color:green;" onclick="EditExpanseCategory({{$newexpanse_categories->id}})"><b>Edit</b></a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="DeleteExpansecategory({{$newexpanse_categories->id}})" style="cursor: pointer;color:red;"><b>Delete</b></a></p><br>
+									   
                                        <div class="row col-md-12">
 										<div class="col-md-8">
 											<input type="text" placeholder="Add Subcategory" name="subcategory_name" id="subcategory_name{{$newexpanse_categories->id}}" class="form-control">
@@ -72,7 +73,7 @@
 											{{$newsubcategories->subcategory_name}}
 											</div>
 											<div class="col-md-3" style="border: 1px solid #d3d3d3;">
-												<a style="cursor: pointer;color:green;" ><b>Edit</b></a>
+												<a onclick="EditSubExpanseCategory({{$newsubcategories->id}},{{$newexpanse_categories->id}})" style="cursor: pointer;color:green;" ><b>Edit</b></a>
 											</div>
 											<div class="col-md-3" style="border: 1px solid #d3d3d3;">
 												<a onclick="DeleteSubExpanseCategory({{$newsubcategories->id}},{{$newexpanse_categories->id}})" style="cursor: pointer;color:red;"><b>Delete</b></a>
@@ -172,6 +173,38 @@
                                 </div>
                             </div>
                         </div>
+						
+						<div class="modal fade text-left" id="subexpanse_categorymodel" tabindex="-1" role="dialog"
+                                    aria-labelledby="myModalLabel19" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm"
+                                        role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel19">Edit Sub Expanse Category</h4>
+                                               
+                                            </div>
+                                            <div class="modal-body">
+												<div class="col-12">
+													<div class="form-group">
+														<input type="text" id="category_name" class="form-control" name="category_name" placeholder="Category Name" required>
+													</div>
+												</div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light-secondary btn-sm"
+                                                    data-bs-dismiss="modal">
+                                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                                    <span class="d-sm-block d-none">Close</span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary ml-1 btn-sm"
+                                                    data-bs-dismiss="modal">
+                                                    <i class="bx bx-check d-block d-sm-none"></i>
+                                                    <span class="d-sm-block d-none">Save</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 						
 <script>
 	var token = $("meta[name='_token']").attr('content');
@@ -304,6 +337,10 @@
 						
 				}
 		})
+	}
+	
+	function EditSubExpanseCategory(SuexpanseCat_ID,ExpanseCat_ID){
+		$('#subexpanse_categorymodel').modal('toggle'); 	
 	}
 </script>
 @endsection
