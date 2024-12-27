@@ -186,20 +186,21 @@
                                             <div class="modal-body">
 												<div class="col-12">
 													<div class="form-group">
-														<input type="text" id="category_name" class="form-control" name="category_name" placeholder="Category Name" required>
+														<input type="text" id="subcategory_name" class="form-control" name="subcategory_name" placeholder="Subcategory Name" required>
 													</div>
 												</div>
                                             </div>
+											<input type="hidden" id="subcat_id">
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-light-secondary btn-sm"
                                                     data-bs-dismiss="modal">
                                                     <i class="bx bx-x d-block d-sm-none"></i>
                                                     <span class="d-sm-block d-none">Close</span>
                                                 </button>
-                                                <button type="button" class="btn btn-primary ml-1 btn-sm"
+                                                <button type="button" onclick="UpdateSubcategory()" class="btn btn-primary ml-1 btn-sm"
                                                     data-bs-dismiss="modal">
                                                     <i class="bx bx-check d-block d-sm-none"></i>
-                                                    <span class="d-sm-block d-none">Save</span>
+                                                    <span class="d-sm-block d-none">Update</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -339,8 +340,64 @@
 		})
 	}
 	
-	function EditSubExpanseCategory(SuexpanseCat_ID,ExpanseCat_ID){
-		$('#subexpanse_categorymodel').modal('toggle'); 	
+	var edit_Subexpanse_category = "{{ route('edit_Subexpanse_category') }}";
+	function EditSubExpanseCategory(Subcategory_ID,Category_ID){
+		$.ajaxSetup({
+					  headers: { 
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					  }
+				   });
+		$.ajax({
+				url:edit_Subexpanse_category,
+				method:"POST",
+				data:{
+					_token:token,
+					Subcategory_ID:Subcategory_ID,
+					Category_ID:Category_ID
+				},
+				success:function(res){
+					var json = JSON.parse(res);
+					var subcategory_name=json.subcategory_name;
+					var id=json.id;
+					$("#subcat_id").val(id);
+					$("#subcategory_name").val(subcategory_name);
+					$('#subexpanse_categorymodel').modal('toggle'); 
+				}
+		})
+	}
+	
+	
+	var update_Subcategory = "{{ route('update_Subcategory') }}";
+	function UpdateSubcategory(){
+		var subcat_id=$("#subcat_id").val();
+		var subcategory_name=$("#subcategory_name").val();
+		$.ajaxSetup({
+					  headers: { 
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					  }
+				   });
+		$.ajax({
+				url:update_Subcategory,
+				method:"POST",
+				data:{
+					_token:token,
+					subcat_id:subcat_id,
+					subcategory_name:subcategory_name
+				},
+				success:function(res){
+					var json = JSON.parse(res);
+					var status=json.status;
+					
+					if(status==1){
+						alert("Data Updated successfully");
+					}else{
+						alert("Something went wrong,try again");
+					}
+					$("#subcat_id").val("");
+					$("#subcategory_name").val("");
+					$('#subexpanse_categorymodel').modal('toggle'); 
+				}
+		})
 	}
 </script>
 @endsection

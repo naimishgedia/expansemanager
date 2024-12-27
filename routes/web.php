@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::post('delete-expcategory', [ExpanseCategoryController::class, 'deleteexpcategory'])->name('deleteexpcategory');
 	Route::post('save-subexpansecategory', [ExpanseCategoryController::class, 'save_subexpansecategory'])->name('save_subexpansecategory');
 	Route::post('delete_subexpansecategory', [ExpanseCategoryController::class, 'delete_subexpansecategory'])->name('delete_subexpansecategory');
+	Route::post('edit_Subexpanse_category', [ExpanseCategoryController::class, 'edit_Subexpanse_category'])->name('edit_Subexpanse_category');
+	Route::post('update_Subcategory', [ExpanseCategoryController::class, 'update_Subcategory'])->name('update_Subcategory');
 	
 	Route::get('income-category', [IncomeCategoryController::class, 'index'])->name('income_category');
 	Route::post('insert-income-category', [IncomeCategoryController::class, 'insertnew_incomecategoryFunction'])->name('insertnew_incomecategory');

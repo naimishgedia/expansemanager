@@ -197,6 +197,23 @@ class ExpanseCategoryController extends Controller
 		}
 	}
 	
+	public function edit_Subexpanse_category(Request $request){
+		$input = $request->all();
+		$expcategory = SubExpanseCategory::findOrFail($input['Subcategory_ID']);
+		echo json_encode($expcategory);
+	}
+	
+	public function update_Subcategory(Request $request){
+		$input = $request->all();
+		$subcategory = SubExpanseCategory::findOrFail($request->input('subcat_id'));
+		$subcategory->subcategory_name = $request->input('subcategory_name');
+        if ($subcategory->save()) {
+			return response()->json(['status' => '1']);
+		} else {
+			return response()->json(['status' => '0']);
+		}
+	}
+	
 	
 	
 }

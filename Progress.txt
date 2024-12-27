@@ -6,4 +6,4 @@ insert,delete subexpanse category
 insert,update,deleteIncome category
 insert,delete subincome category
 
-currently working on expanse category edit functionality
+expanse category edit functionality done.update thai jai pachi update no message aapvano che. json parse issue
