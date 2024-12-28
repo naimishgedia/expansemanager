@@ -1,5 +1,5 @@
 income subcategory edit module is pending
 
      
-i am working on add expanse module.ama add daily expanse ni design bani gai che.
-have database table create krvanu che and functionality banavani che
+monthly expanse ni entry database ma padavi didhi che
+validation nu kam chale che

@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
 
 	//Daily Expanse
 	Route::get('daily-expanse', [DailyExpanseController::class, 'index'])->name('daily_expanse');
+	Route::post('getsubcategory', [DailyExpanseController::class, 'getsubcategory'])->name('getsubcategory');
+	Route::post('insert-daily-expanse', [DailyExpanseController::class, 'InsertDailyExpanse'])->name('insert.dailyexpanse');
 	
 
 });
