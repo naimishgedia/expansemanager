@@ -39,7 +39,7 @@
                         class="sidebar-item @if($page_title == '') active @endif">
                         <a href="{{ route('daily_expanse') }}" class='sidebar-link'>
                         <i class="fa fa-arrow-left" style="font-size:24px"></i>
-                        <span>Add Daily Expanse</span>
+                        <span>Daily Expanse</span>
                         </a>
                      </li>
                      <li

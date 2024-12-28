@@ -146,13 +146,13 @@ class ExpanseCategoryController extends Controller
 			
 			$table='';
 			foreach($UserSubexpanseCat as $newUserSubexpanseCat){
-			$table.='<div class="col-md-6" style="border: 1px solid #d3d3d3;">
+			$table.='<div class="col-md-6" style="border: 1px solid #d3d3d3;padding: 7px;">
 				'.$newUserSubexpanseCat->subcategory_name.'
 			</div>
-			<div class="col-md-3" style="border: 1px solid #d3d3d3;">
-				<a style="cursor: pointer;color:green;"><b>Edit</b></a>
+			<div class="col-md-3" style="border: 1px solid #d3d3d3;padding: 7px;">
+				<a onclick="EditSubExpanseCategory('.$newUserSubexpanseCat->id.','.$input['exp_cat_id'].')"        		style="cursor: pointer;color:green;"><b>Edit</b></a>
 			</div>
-			<div class="col-md-3" style="border: 1px solid #d3d3d3;" onclick="DeleteSubExpanseCategory('.$newUserSubexpanseCat->id.','.$input['exp_cat_id'].')" >
+			<div class="col-md-3" style="border: 1px solid #d3d3d3;padding: 7px;" onclick="DeleteSubExpanseCategory('.$newUserSubexpanseCat->id.','.$input['exp_cat_id'].')" >
 				<a style="cursor: pointer;color:red;"><b>Delete</b></a>
 			</div>';
 			}
@@ -177,13 +177,13 @@ class ExpanseCategoryController extends Controller
 			}else{
 				$table='';  
 				foreach($UserSubexpanseCat as $newUserSubexpanseCat){  
-				$table.='<div class="col-md-6" style="border: 1px solid #d3d3d3;">
+				$table.='<div class="col-md-6" style="border: 1px solid #d3d3d3;padding: 7px;">
 					'.$newUserSubexpanseCat->subcategory_name.'
 				</div>
-				<div class="col-md-3" style="border: 1px solid #d3d3d3;">
-					<a style="cursor: pointer;color:green;"><b>Edit</b></a>
+				<div class="col-md-3" style="border: 1px solid #d3d3d3;padding: 7px;">
+					<a onclick="EditSubExpanseCategory('.$newUserSubexpanseCat->id.','.$input['exp_cat'].')" style="cursor: pointer;color:green;"><b>Edit</b></a>
 				</div>
-				<div class="col-md-3" style="border: 1px solid #d3d3d3;" onclick="DeleteSubExpanseCategory('.$newUserSubexpanseCat->id.','.$input['exp_cat'].')" >
+				<div class="col-md-3" style="border: 1px solid #d3d3d3;padding: 7px;" onclick="DeleteSubExpanseCategory('.$newUserSubexpanseCat->id.','.$input['exp_cat'].')" >
 					<a style="cursor: pointer;color:red;"><b>Delete</b></a>
 				</div>';
 				}
@@ -207,11 +207,13 @@ class ExpanseCategoryController extends Controller
 		$input = $request->all();
 		$subcategory = SubExpanseCategory::findOrFail($request->input('subcat_id'));
 		$subcategory->subcategory_name = $request->input('subcategory_name');
-        if ($subcategory->save()) {
+		$subcategory->save();
+		echo 1;  
+       /*  if ($subcategory->save()) {
 			return response()->json(['status' => '1']);
 		} else {
 			return response()->json(['status' => '0']);
-		}
+		} */
 	}
 	
 	

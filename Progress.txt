@@ -1,9 +1,5 @@
-Authentication
-Change password
-Logout
-insert,update,delete Expanse category
-insert,delete subexpanse category
-insert,update,deleteIncome category
-insert,delete subincome category
+income subcategory edit module is pending
 
-expanse category edit functionality done.update thai jai pachi update no message aapvano che. json parse issue
+     
+i am working on add expanse module.ama add daily expanse ni design bani gai che.
+have database table create krvanu che and functionality banavani che

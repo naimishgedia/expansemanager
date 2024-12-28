@@ -69,13 +69,13 @@
                                        </div><br>
 									   <div id="dynamic_div{{$newexpanse_categories->id}}" class="row col-md-12">
 										@foreach($subcategories as $newsubcategories)
-											<div class="col-md-6" style="border: 1px solid #d3d3d3;">
+											<div class="col-md-6" style="border: 1px solid #d3d3d3;padding: 7px;">
 											{{$newsubcategories->subcategory_name}}
 											</div>
-											<div class="col-md-3" style="border: 1px solid #d3d3d3;">
+											<div class="col-md-3" style="border: 1px solid #d3d3d3;padding: 7px;">
 												<a onclick="EditSubExpanseCategory({{$newsubcategories->id}},{{$newexpanse_categories->id}})" style="cursor: pointer;color:green;" ><b>Edit</b></a>
 											</div>
-											<div class="col-md-3" style="border: 1px solid #d3d3d3;">
+											<div class="col-md-3" style="border: 1px solid #d3d3d3;    padding: 7px;">
 												<a onclick="DeleteSubExpanseCategory({{$newsubcategories->id}},{{$newexpanse_categories->id}})" style="cursor: pointer;color:red;"><b>Delete</b></a>
 											</div>
 										@endforeach
@@ -385,17 +385,21 @@
 					subcategory_name:subcategory_name
 				},
 				success:function(res){
-					var json = JSON.parse(res);
-					var status=json.status;
 					
-					if(status==1){
-						alert("Data Updated successfully");
-					}else{
-						alert("Something went wrong,try again");
-					}
-					$("#subcat_id").val("");
+					var json = JSON.parse(res);
+					var status= json.status;
+					
+					Swal.fire( 
+						'Data Updated', 
+						'', 
+						'success'
+					).then((value) => { 
+							location.reload();
+					});
+
+					/* $("#subcat_id").val("");
 					$("#subcategory_name").val("");
-					$('#subexpanse_categorymodel').modal('toggle'); 
+					$('#subexpanse_categorymodel').modal('toggle');  */
 				}
 		})
 	}
