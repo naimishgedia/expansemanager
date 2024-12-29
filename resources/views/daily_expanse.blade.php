@@ -40,21 +40,57 @@
 						@if (session('error'))
 							<div class="alert alert-danger"><b>{{ session('error') }}</b></div>
 						@endif
+						
 						@foreach($monthlyExpanse as $date => $records)
+							@php 
+								$DatewiseTotal = 0; // Initialize total for the date
+								$categoryWiseData = [];
+							@endphp
+
 							<ul class="list-group">
-							   <li class="list-group-item active">{{ $date }}</li>
-							   
-							   @foreach($records as $record)
-									<li class="list-group-item d-flex justify-content-between align-items-center">
-									  <span>{{ $record->category->category_name }}</span>
-									  <span>{{ $record->subcategory->subcategory_name }}</span>
-									  <span class="badge bg-warning badge-pill badge-round ml-1">{{ $record->amount }}</span>
-								   </li>
+								@foreach($records as $record)
+									@php
+										$DatewiseTotal += $record->amount; // Sum up amounts for the date
+										$categoryName = $record->category->category_name ?? 'Unknown';
+										$subcategoryName = $record->subcategory->subcategory_name ?? 'Unknown';
+
+										if (!isset($categoryWiseData[$categoryName])) {
+											$categoryWiseData[$categoryName] = [
+												'total' => 0,
+												'subcategories' => []
+											];
+										}
+
+										$categoryWiseData[$categoryName]['total'] += $record->amount;
+										$categoryWiseData[$categoryName]['subcategories'][] = [
+											'subcategory' => $subcategoryName,
+											'amount' => $record->amount
+										];
+									@endphp
 								@endforeach
-							   
-							</ul><br>
-							
-						@endforeach
+
+								<li class="list-group-item active">
+									<h4 style="color:white;">{{ $date }} - Total: {{ $DatewiseTotal }}</h4>
+								</li>
+
+								@foreach($categoryWiseData as $categoryName => $categoryData)
+									<li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+										<strong>{{ $categoryName }}</strong>
+										<span class="badge bg-primary badge-pill badge-round ml-1">Total: {{ $categoryData['total'] }}</span>
+									</li>
+									
+									@foreach($categoryData['subcategories'] as $subcategory)
+										<li class="list-group-item d-flex justify-content-between align-items-center">
+											<span>{{ $subcategory['subcategory'] }}</span>
+											<span class="badge bg-warning badge-pill badge-round ml-1">{{ $subcategory['amount'] }}</span>
+										</li>
+									@endforeach
+								@endforeach
+							</ul>
+							<br> 
+						@endforeach    
+ 
+  
                         
                      </div>
                   </div>

@@ -21,7 +21,7 @@ class DailyExpanseController extends Controller
 						->orderBy('expanse_date', 'desc')
 						->get()
 						->groupBy(function ($item) {
-							return Carbon::parse($item->expanse_date)->format('Y-m-d'); // Parse the string and format it
+							return Carbon::parse($item->expanse_date)->format('Y-m-d');
 						});
 		
 		$ExpanseCategory=UserExpanseCategory::where('user_id', auth()->user()->id)->get();
