@@ -10,13 +10,22 @@ use App\Models\MonthlyExpanse;
 use Hash;
 use DB;  
 use Session;
+use Illuminate\Support\Carbon;
 
 class DailyExpanseController extends Controller
 {
      public function index(Request $request){     
 		$page_title="Daily Category";   
+		$monthlyExpanse = MonthlyExpanse::with(['category', 'subcategory'])
+						->where('user_id', auth()->user()->id)
+						->orderBy('expanse_date', 'desc')
+						->get()
+						->groupBy(function ($item) {
+							return Carbon::parse($item->expanse_date)->format('Y-m-d'); // Parse the string and format it
+						});
+		
 		$ExpanseCategory=UserExpanseCategory::where('user_id', auth()->user()->id)->get();
-		return view('daily_expanse',compact('page_title','ExpanseCategory')); 
+		return view('daily_expanse',compact('page_title','ExpanseCategory','monthlyExpanse')); 
 	}
 	
 	public function getsubcategory(Request $request){
@@ -42,6 +51,7 @@ class DailyExpanseController extends Controller
 
 		$input = $request->all();
 		$monthlyExpanse = new MonthlyExpanse();
+		$monthlyExpanse->user_id = auth()->user()->id;
 		$monthlyExpanse->expanse_date = $input['expanse_date'];
 		$monthlyExpanse->amount = $input['amount'];
 		$monthlyExpanse->category_id = $input['category_id'];
